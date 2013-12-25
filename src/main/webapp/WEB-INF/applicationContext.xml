@@ -54,7 +54,7 @@
 		<property name="dataSource" ref="dataSource" />
 
 		<!-- Tells Hibernate where to look for annotation-marked persistent entity objects -->
-		<property name="packagesToScan" value="com.cam.entity" />
+		<property name="packagesToScan" value="com.wsm.entity" />
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.hbm2ddl.auto">${db.hbm2ddl}</prop>
@@ -72,7 +72,38 @@
 		class="com.evalua.entity.support.DataStoreManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	<bean id="XMLParser"
+	<bean id="wsmConfiguration"	class="com.wsm.processor.WSMConfiguration">
+		<property name="rainMinThreshold">
+	        <value>${wsm.config.rainMinThreshold}</value>
+	    </property>
+	    <property name="rainMaxThreshold">
+	        <value>${wsm.config.rainMaxThreshold}</value>
+	    </property>
+	    <property name="snowMinThreshold">
+	        <value>${wsm.config.snowMinThreshold}</value>
+	    </property>
+	    <property name="snowMaxThreshold">
+	        <value>${wsm.config.snowMaxThreshold}</value>
+	    </property>
+	    <property name="maxRainPmfStrings">
+	        <value>${wsm.config.pmfStrings.maxRain}</value>
+	    </property>
+	     <property name="minRainPmfStrings">
+	        <value>${wsm.config.pmfStrings.minRain}</value>
+	    </property>	
+	     <property name="maxSnowPmfStrings">
+	        <value>${wsm.config.pmfStrings.maxSnow}</value>
+	    </property>	
+	     <property name="minSnowPmfStrings">
+	        <value>${wsm.config.pmfStrings.minSnow}</value>
+	    </property> 
+	    
+	</bean>
+	<bean id="xmlParser"
 		class="com.wsm.util.XMLParser">
+	</bean>
+	<bean id="pmfCalculator" class="com.wsm.processor.PMFCalculator">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="configuration" ref="wsmConfiguration" />
 	</bean>		
 </beans>

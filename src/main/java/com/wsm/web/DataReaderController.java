@@ -18,6 +18,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.wsm.processor.PMFCalculator;
 import com.wsm.util.XMLParser;
 
 @Controller
@@ -28,6 +29,9 @@ public class DataReaderController {
 
 	@Resource
 	private XMLParser xmlParser;
+	
+	@Resource
+	private PMFCalculator pmfCalculator;
 
 	@RequestMapping("/readData")
 	public ModelAndView readData()throws Exception{
