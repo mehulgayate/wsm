@@ -18,6 +18,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.evalua.entity.support.DataStoreManager;
+import com.wsm.entity.Report;
 import com.wsm.processor.PMFCalculator;
 import com.wsm.util.XMLParser;
 
@@ -32,6 +34,9 @@ public class DataReaderController {
 	
 	@Resource
 	private PMFCalculator pmfCalculator;
+	
+	@Resource
+	private DataStoreManager dataStoreManager;
 
 	@RequestMapping("/readData")
 	public ModelAndView readData()throws Exception{
@@ -44,6 +49,7 @@ public class DataReaderController {
 			Document doc = dBuilder.parse(fXmlFile);
 			JSONObject jsonObject=new JSONObject();
 			jsonObject.put(doc.getDocumentElement().getNodeName(), xmlParser.parseXML(doc));
+			pmfCalculator.JsontoReport(jsonObject);
 			mv.addObject("json",jsonObject);
 		} catch (Exception e) {
 			e.printStackTrace();

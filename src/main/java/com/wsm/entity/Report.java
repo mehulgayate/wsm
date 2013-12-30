@@ -3,12 +3,16 @@ package com.wsm.entity;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
 import com.evalua.entity.support.EntityBase;
 
 @Entity
 public class Report extends EntityBase{
 
+	@Id
+	@GeneratedValue
 	private Long id;
 	private String xmlString;
 	private String klStringValue;

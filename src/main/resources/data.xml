@@ -6,6 +6,7 @@
 		<humidity>80</humidity>
 		<wdirection>e2w</wdirection>
 		<wspeed>30</wspeed>
+		<rain>10</rain>
 	</report>
 	<report id="1002">
 		<date>20-11-2013</date>
@@ -13,5 +14,6 @@
 		<humidity>70</humidity>
 		<wdirection>e2w</wdirection>
 		<wspeed>30</wspeed>
+		<rain>5</rain>
 	</report>
 </weather>

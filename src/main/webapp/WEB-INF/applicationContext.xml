@@ -102,8 +102,8 @@
 	<bean id="xmlParser"
 		class="com.wsm.util.XMLParser">
 	</bean>
-	<bean id="pmfCalculator" class="com.wsm.processor.PMFCalculator">
-		<property name="sessionFactory" ref="sessionFactory" />
+	<bean id="pmfCalculator" class="com.wsm.processor.PMFCalculator">		
 		<property name="configuration" ref="wsmConfiguration" />
+		<property name="dataStoreManager" ref="dataStoreManager" />
 	</bean>		
 </beans>
