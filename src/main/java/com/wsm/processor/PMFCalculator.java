@@ -15,7 +15,7 @@ import com.wsm.entity.Report;
 public class PMFCalculator {	
 
 	private WSMConfiguration configuration;	
-	
+
 	@Resource
 	private DataStoreManager dataStoreManager;
 
@@ -59,8 +59,9 @@ public class PMFCalculator {
 			String reportKey=iterator.next();
 			JSONObject reportObject=reports.getJSONObject(reportKey);
 			Iterator<String> innIterator=reportObject.keys();
+			Report report=new Report();
+
 			do{
-				Report report=new Report();
 				String key=innIterator.next();
 				System.out.println("Key "+key);
 				if(key.equals("rain")){
@@ -70,11 +71,11 @@ public class PMFCalculator {
 					report.setSnow(reportObject.getInt(key));
 				}else if(key.equals("xml")){
 					report.setXmlString(reportObject.getString(key));
-				}
-				calculatePFM(report);
-				dataStoreManager.save(report);
-				
+				}		
+
 			}while(innIterator.hasNext());
+			calculatePFM(report);
+			dataStoreManager.save(report);
 		}while(iterator.hasNext());
 
 	}
