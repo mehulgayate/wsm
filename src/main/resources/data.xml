@@ -1,19 +1,21 @@
 <?xml version="1.0"?>
 <weather>
 	<report id="1001">
-		<date>20-11-2013</date>
+		<date>2014-01-09</date>
 		<temperature>30</temperature>
 		<humidity>80</humidity>
-		<wdirection>e2w</wdirection>
+		<wdirection>WEST2EAST</wdirection>
 		<wspeed>30</wspeed>
 		<rain>10</rain>
+		<snow>0</snow>
 	</report>
 	<report id="1002">
-		<date>20-11-2013</date>
+		<date>2014-01-10</date>
 		<temperature>30</temperature>
 		<humidity>70</humidity>
-		<wdirection>e2w</wdirection>
+		<wdirection>EAST2WEST</wdirection>
 		<wspeed>30</wspeed>
 		<rain>5</rain>
+		<snow>0</snow>
 	</report>
 </weather>

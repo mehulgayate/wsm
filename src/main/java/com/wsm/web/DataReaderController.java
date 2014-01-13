@@ -20,6 +20,7 @@ import org.w3c.dom.NodeList;
 
 import com.evalua.entity.support.DataStoreManager;
 import com.wsm.entity.Report;
+import com.wsm.processor.ClusterCreator;
 import com.wsm.processor.PMFCalculator;
 import com.wsm.util.XMLParser;
 
@@ -37,6 +38,9 @@ public class DataReaderController {
 	
 	@Resource
 	private DataStoreManager dataStoreManager;
+	
+	@Resource
+	private ClusterCreator clusterCreator;
 
 	@RequestMapping("/readData")
 	public ModelAndView readData()throws Exception{
@@ -50,6 +54,9 @@ public class DataReaderController {
 			JSONObject jsonObject=new JSONObject();
 			jsonObject.put(doc.getDocumentElement().getNodeName(), xmlParser.parseXML(doc));
 			pmfCalculator.JsontoReport(jsonObject);
+			
+			clusterCreator.crateClusters();
+			clusterCreator.allocateCluster();
 			mv.addObject("json",jsonObject);
 		} catch (Exception e) {
 			e.printStackTrace();

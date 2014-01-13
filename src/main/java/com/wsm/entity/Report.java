@@ -1,6 +1,7 @@
 package com.wsm.entity;
 
-import java.sql.Date;
+
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,24 +11,34 @@ import com.evalua.entity.support.EntityBase;
 
 @Entity
 public class Report extends EntityBase{
+	
+	public enum WindDirection{
+		EAST2WEST,WEST2EAST;
+	}
 
 	@Id
 	@GeneratedValue
 	private Long id;
 	private String xmlString;
 	private String klStringValue;
-	private Integer klIntValue;
 	private Integer rain;	
 	private Integer snow;
 	private Integer temprature;
 	private Integer humidity;
-	private Integer wdirection;
+	private WindDirection windDirection;
 	private Integer wspeed;
 	private Date date;
 	private Integer reportId;
 	
 	
 	
+	
+	public WindDirection getWindDirection() {
+		return windDirection;
+	}
+	public void setWindDirection(WindDirection windDirection) {
+		this.windDirection = windDirection;
+	}
 	public Integer getRain() {
 		return rain;
 	}
@@ -51,13 +62,7 @@ public class Report extends EntityBase{
 	}
 	public void setHumidity(Integer humidity) {
 		this.humidity = humidity;
-	}
-	public Integer getWdirection() {
-		return wdirection;
-	}
-	public void setWdirection(Integer wdirection) {
-		this.wdirection = wdirection;
-	}
+	}	
 	public Integer getWspeed() {
 		return wspeed;
 	}
@@ -93,12 +98,6 @@ public class Report extends EntityBase{
 	}
 	public void setKlStringValue(String klStringValue) {
 		this.klStringValue = klStringValue;
-	}
-	public Integer getKlIntValue() {
-		return klIntValue;
-	}
-	public void setKlIntValue(Integer klIntValue) {
-		this.klIntValue = klIntValue;
 	}
 	
 }

@@ -72,6 +72,10 @@
 		class="com.evalua.entity.support.DataStoreManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+	<bean id="repository"
+		class="com.evalua.entity.support.Repository">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 	<bean id="wsmConfiguration"	class="com.wsm.processor.WSMConfiguration">
 		<property name="rainMinThreshold">
 	        <value>${wsm.config.rainMinThreshold}</value>
@@ -85,25 +89,80 @@
 	    <property name="snowMaxThreshold">
 	        <value>${wsm.config.snowMaxThreshold}</value>
 	    </property>
+	    <property name="tempMinThreshold">
+	        <value>${wsm.config.snowMinThreshold}</value>
+	    </property>
+	    <property name="tempMaxThreshold">
+	        <value>${wsm.config.snowMaxThreshold}</value>
+	    </property>
+	    <property name="humidityMinThreshold">
+	        <value>${wsm.config.snowMinThreshold}</value>
+	    </property>
+	    <property name="humidityMaxThreshold">
+	        <value>${wsm.config.snowMaxThreshold}</value>
+	    </property>
+	    <property name="windSpeedMinThreshold">
+	        <value>${wsm.config.snowMinThreshold}</value>
+	    </property>
+	    <property name="windSpeedMaxThreshold">
+	        <value>${wsm.config.snowMaxThreshold}</value>
+	    </property>
+	    
+	    
 	    <property name="maxRainPmfStrings">
 	        <value>${wsm.config.pmfStrings.maxRain}</value>
 	    </property>
 	     <property name="minRainPmfStrings">
 	        <value>${wsm.config.pmfStrings.minRain}</value>
 	    </property>	
-	     <property name="maxSnowPmfStrings">
+	    <property name="maxSnowPmfStrings">
 	        <value>${wsm.config.pmfStrings.maxSnow}</value>
 	    </property>	
 	     <property name="minSnowPmfStrings">
 	        <value>${wsm.config.pmfStrings.minSnow}</value>
-	    </property> 
-	    
+	    </property>
+	    <property name="maxTempPmfStrings">
+	        <value>${wsm.config.pmfStrings.maxTemp}</value>
+	    </property>	
+	     <property name="minTempPmfStrings">
+	        <value>${wsm.config.pmfStrings.minTemp}</value>
+	    </property>
+	    <property name="maxHumidityPmfStrings">
+	        <value>${wsm.config.pmfStrings.maxHumidity}</value>
+	    </property>	
+	     <property name="minHumidiityPmfStrings">
+	        <value>${wsm.config.pmfStrings.minHumidity}</value>
+	    </property>
+	    <property name="maxWindSpeedPmfStrings">
+	        <value>${wsm.config.pmfStrings.maxWindSpeed}</value>
+	    </property>	
+	     <property name="minWindSpeedPmfStrings">
+	        <value>${wsm.config.pmfStrings.minWindSpeed}</value>
+	    </property>
+	    <property name="E2WWindDirPmfStrings">
+	        <value>${wsm.config.pmfStrings.windEastWest}</value>
+	    </property>	
+	     <property name="W2EWindDirPmfStrings">
+	        <value>${wsm.config.pmfStrings.windWestEast}</value>
+	    </property>
+	    <property name="clusterBaseLocation">
+	        <value>${wsm.clusterBaseLocation}</value>
+	    </property>	    
 	</bean>
 	<bean id="xmlParser"
 		class="com.wsm.util.XMLParser">
 	</bean>
+	<bean id="dateTimeUtil"
+		class="com.wsm.util.DateTimeUtil">
+	</bean>
 	<bean id="pmfCalculator" class="com.wsm.processor.PMFCalculator">		
 		<property name="configuration" ref="wsmConfiguration" />
 		<property name="dataStoreManager" ref="dataStoreManager" />
+		<property name="dateTimeUtil" ref="dateTimeUtil" />
+	</bean>
+	<bean id="clusterCreator" class="com.wsm.processor.ClusterCreator">		
+		<property name="configuration" ref="wsmConfiguration" />
+		<property name="repository" ref="repository" />
+		<property name="dateTimeUtil" ref="dateTimeUtil" />
 	</bean>		
 </beans>
