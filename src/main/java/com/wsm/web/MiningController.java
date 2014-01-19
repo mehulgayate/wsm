@@ -1,5 +1,9 @@
 package com.wsm.web;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,9 +28,17 @@ public class MiningController {
 	}
 	
 	@RequestMapping("/mine-clusetred-data")
-	public ModelAndView mineCluesteredData(HttpServletRequest request,@ModelAttribute(MiningFilterForm.key) MiningFilterForm miningFilterForm){
+	public ModelAndView mineCluesteredData(HttpServletRequest request,@ModelAttribute(MiningFilterForm.key) MiningFilterForm miningFilterForm) throws ParseException, IOException{
 		ModelAndView mv=new ModelAndView("mining-result");
-		String xmlString=miningService.mineInClusteredData(miningFilterForm);
+		Date startBeforeClusMining=new Date();
+		String clusteredXmlString=miningService.mineInClusteredData(miningFilterForm);
+		mv.addObject("clustredtakenTime",(new Date().getTime()-startBeforeClusMining.getTime()));
+		
+		Date startNonClusData=new Date();
+		String nonClusteredData=miningService.mineFromNonClustredData(miningFilterForm);
+		mv.addObject("nonClustredtakenTime",(new Date().getTime()-startNonClusData.getTime()));
+		mv.addObject("nonClusteredData",nonClusteredData);		
+		mv.addObject("clusteredXmlResult",clusteredXmlString);
 		return mv;
 	}
 

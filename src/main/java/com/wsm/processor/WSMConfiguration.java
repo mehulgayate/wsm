@@ -29,8 +29,15 @@ public class WSMConfiguration {
 	private String W2EWindDirPmfStrings;
 
 	private String clusterBaseLocation;
+	private String originalBaseLocation;
 
 
+	public String getOriginalBaseLocation() {
+		return originalBaseLocation;
+	}
+	public void setOriginalBaseLocation(String originalBaseLocation) {
+		this.originalBaseLocation = originalBaseLocation;
+	}
 	public String getClusterBaseLocation() {
 		return clusterBaseLocation;
 	}

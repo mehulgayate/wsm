@@ -17,11 +17,12 @@ public class XMLParser {
 		NodeList nList = document.getElementsByTagName("report");
 
 		for (int temp = 0; temp < nList.getLength(); temp++) {
-			String xmlString="<report>";
+			String xmlString="<report id=\"";
 			JSONObject innerJsonObject=new JSONObject();
 			Node nNode = nList.item(temp);
 			if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 				Element eElement = (Element) nNode;
+				xmlString=xmlString+eElement.getAttribute("id")+"\">";
 				NodeList innerList=eElement.getChildNodes();
 				for(int i=0;i<innerList.getLength();i++){
 					Node currentNode=innerList.item(i);

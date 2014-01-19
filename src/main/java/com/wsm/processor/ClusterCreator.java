@@ -39,6 +39,8 @@ public class ClusterCreator {
 		List<String> clusterStrings=repository.getClusterStrings();
 
 		File baseFolder= new File(configuration.getClusterBaseLocation()+"/conf.wsm");
+		File baseAllDataFolder= new File(configuration.getOriginalBaseLocation()+"/conf.wsm");
+		baseAllDataFolder.mkdirs();
 		baseFolder.mkdirs();
 		try {
 			baseFolder.createNewFile();
@@ -56,6 +58,7 @@ public class ClusterCreator {
 
 		for (Report report : reports) {
 			Cluster cluster=repository.findClusterByName(report.getKlStringValue());
+
 			if(cluster==null){
 				cluster =new Cluster();
 				cluster.setName(report.getKlStringValue());
@@ -63,11 +66,22 @@ public class ClusterCreator {
 			}
 			String fileName=dateTimeUtil.provideDateString(report.getDate());
 			File file=new File(configuration.getClusterBaseLocation()+"/"+report.getKlStringValue()+"/"+fileName+".xml");
+			File allDatafile=new File(configuration.getOriginalBaseLocation()+"/allData.xml");
+
 			if(!file.exists()){
+
 				file.createNewFile();
 				FileWriter fileWritter = new FileWriter(file,true);
 				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-				bufferWritter.append("<weather>");
+				bufferWritter.append("<weather>");				
+				bufferWritter.close();
+			}
+			if(!allDatafile.exists()){
+
+				allDatafile.createNewFile();
+				FileWriter fileWritter = new FileWriter(allDatafile,true);
+				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+				bufferWritter.append("<weather>");				
 				bufferWritter.close();
 			}
 			
@@ -87,19 +101,47 @@ public class ClusterCreator {
 			}
 
 			reader.close();
-			writer.close();
+			writer.close();			
+			tempFile.renameTo(file);			
 			
-			boolean successful = tempFile.renameTo(file);
+			//Add data to All data File as well
+			tempFile = new File(configuration.getOriginalBaseLocation()+"/temp.xml");
+			reader = new BufferedReader(new FileReader(allDatafile));
+			writer = new BufferedWriter(new FileWriter(tempFile));
+			
+			lineToRemove = "</weather>";		
+
+			while((currentLine = reader.readLine()) != null) {
+			    // trim newline when comparing with lineToRemove
+			    String trimmedLine = currentLine.trim();
+			    if(trimmedLine.equals(lineToRemove)) continue;
+			    writer.write(currentLine);
+			}
+
+			reader.close();
+			writer.close();			
+			tempFile.renameTo(allDatafile);
+
 			
 			FileWriter fileWritter = new FileWriter(file,true);
 			BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
+			bufferWritter.newLine();
 			bufferWritter.append(report.getXmlString());
 			bufferWritter.newLine();
 			bufferWritter.append("</weather>");
 			
 			bufferWritter.close();
-
+			fileWritter.close();
 			
+			fileWritter = new FileWriter(allDatafile,true);
+			bufferWritter = new BufferedWriter(fileWritter);
+			bufferWritter.newLine();
+			bufferWritter.append(report.getXmlString());
+			bufferWritter.newLine();
+			bufferWritter.append("</weather>");
+			
+			bufferWritter.close();
+			fileWritter.close();
 		}
 		System.out.println("Data Clustring Completed !!!");
 	}

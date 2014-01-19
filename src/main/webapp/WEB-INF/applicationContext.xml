@@ -149,6 +149,9 @@
 	    </property>
 	    <property name="clusterBaseLocation">
 	        <value>${wsm.clusterBaseLocation}</value>
+	    </property>	
+	     <property name="originalBaseLocation">
+	        <value>${wsm.originalBaseLocation}</value>
 	    </property>	    
 	</bean>
 	
@@ -162,6 +165,7 @@
 		<property name="configuration" ref="wsmConfiguration" />
 		<property name="repository" ref="repository" />
 		<property name="dateTimeUtil" ref="dateTimeUtil" />
+		<property name="xmlParser" ref="xmlParser" />
 	</bean>
 	<bean id="pmfCalculator" class="com.wsm.processor.PMFCalculator">		
 		<property name="configuration" ref="wsmConfiguration" />
@@ -172,5 +176,6 @@
 		<property name="configuration" ref="wsmConfiguration" />
 		<property name="repository" ref="repository" />
 		<property name="dateTimeUtil" ref="dateTimeUtil" />
+		<property name="dataStoreManager" ref="dataStoreManager" />
 	</bean>		
 </beans>
