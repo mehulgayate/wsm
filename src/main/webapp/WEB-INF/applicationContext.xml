@@ -75,7 +75,7 @@
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="repository"
-		class="com.evalua.entity.support.Repository">
+		class="com.wsm.entity.support.Repository">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 	<bean id="wsmConfiguration"	class="com.wsm.processor.WSMConfiguration">
@@ -151,11 +151,17 @@
 	        <value>${wsm.clusterBaseLocation}</value>
 	    </property>	    
 	</bean>
+	
 	<bean id="xmlParser"
 		class="com.wsm.util.XMLParser">
 	</bean>
 	<bean id="dateTimeUtil"
 		class="com.wsm.util.DateTimeUtil">
+	</bean>
+	<bean id="MiningService" class="com.wsm.web.support.MiningService">		
+		<property name="configuration" ref="wsmConfiguration" />
+		<property name="repository" ref="repository" />
+		<property name="dateTimeUtil" ref="dateTimeUtil" />
 	</bean>
 	<bean id="pmfCalculator" class="com.wsm.processor.PMFCalculator">		
 		<property name="configuration" ref="wsmConfiguration" />

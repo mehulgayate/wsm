@@ -12,8 +12,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.evalua.entity.support.Repository;
+import com.evalua.entity.support.DataStoreManager;
+import com.wsm.entity.Cluster;
 import com.wsm.entity.Report;
+import com.wsm.entity.support.Repository;
 import com.wsm.util.DateTimeUtil;
 
 public class ClusterCreator {
@@ -25,6 +27,13 @@ public class ClusterCreator {
 
 	@Resource
 	private DateTimeUtil dateTimeUtil;
+	
+	@Resource 
+	private DataStoreManager dataStoreManager;	
+
+	public void setDataStoreManager(DataStoreManager dataStoreManager) {
+		this.dataStoreManager = dataStoreManager;
+	}
 
 	public void crateClusters(){
 		List<String> clusterStrings=repository.getClusterStrings();
@@ -46,6 +55,12 @@ public class ClusterCreator {
 		List<Report> reports=repository.listAllReports();
 
 		for (Report report : reports) {
+			Cluster cluster=repository.findClusterByName(report.getKlStringValue());
+			if(cluster==null){
+				cluster =new Cluster();
+				cluster.setName(report.getKlStringValue());
+				dataStoreManager.save(cluster);				
+			}
 			String fileName=dateTimeUtil.provideDateString(report.getDate());
 			File file=new File(configuration.getClusterBaseLocation()+"/"+report.getKlStringValue()+"/"+fileName+".xml");
 			if(!file.exists()){

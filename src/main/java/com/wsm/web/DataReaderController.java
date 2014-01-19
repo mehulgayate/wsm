@@ -73,8 +73,7 @@ public class DataReaderController {
 			Document doc = dBuilder.parse(fileUploadForm.getXmlFile().getInputStream());
 			JSONObject jsonObject=new JSONObject();
 			jsonObject.put(doc.getDocumentElement().getNodeName(), xmlParser.parseXML(doc));
-			pmfCalculator.JsontoReport(jsonObject);
-			
+			pmfCalculator.JsontoReport(jsonObject);			
 			clusterCreator.crateClusters();
 			clusterCreator.allocateCluster();
 			mv.addObject("json",jsonObject);
