@@ -16,6 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.sf.json.JSONObject;
 
+import org.apache.commons.lang.StringUtils;
 import org.w3c.dom.Document;
 
 import com.wsm.entity.Cluster;
@@ -112,7 +113,6 @@ public class MiningService {
 						File file=new File(configuration.getClusterBaseLocation()+"/"+cluster.getName()+"/"+dateTimeUtil.provideDateString(startDate)+".xml");
 						System.out.println("File in clusters "+file.getAbsolutePath());
 						if(file.exists()){
-
 							stringBuilder.append(getFileContent(file));
 						}
 						startDate=dateTimeUtil.getNextMonthsDate(startDate);
@@ -153,42 +153,39 @@ public class MiningService {
 		startDate=dateTimeUtil.getMonthsFirstDate(startDate);
 		Date endDate=dateTimeUtil.provideDate(miningFilterForm.getEndDate());
 		endDate=dateTimeUtil.getMonthsLastDate(endDate);
-		endDate=dateTimeUtil.getNextDate(endDate);
-		System.out.println(reports.toString());
+		endDate=dateTimeUtil.getNextDate(endDate);		
 
 		do{
 			
 			String reportKey=iterator.next();
 			JSONObject reportObject=reports.getJSONObject(reportKey);
 			Date reportDate=dateTimeUtil.provideDate(reportObject.getString("date"));
-			System.out.println("doing "+reportObject.getString("date"));
 			if(reportDate.after(startDate) && reportDate.before(endDate)){
 
 
 				if(miningFilterForm.getHumidity()!=null){
 					if(miningFilterForm.getHumidity().equals("max")){
 						if(reportObject.getInt("humidity")>=configuration.getHumidityMaxThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}else if(miningFilterForm.getHumidity().equals("min")){
 						if(reportObject.getInt("humidity")<=configuration.getHumidityMinThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}
 				}
 
 				if(miningFilterForm.getRain()!=null){
-System.out.println("*************** "+reportObject.getInt("rain"));
 					if(miningFilterForm.getRain().equals("max")){
 						if(reportObject.getInt("rain")>=configuration.getRainMaxThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}			
 					}else if(miningFilterForm.getRain().equals("min")){
 						if(reportObject.getInt("rain")<=configuration.getRainMinThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}
@@ -198,12 +195,12 @@ System.out.println("*************** "+reportObject.getInt("rain"));
 				else if(miningFilterForm.getSnow()!=null){
 					if(miningFilterForm.getSnow().equals("max")){
 						if(reportObject.getInt("snow")>=configuration.getSnowMaxThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}else if(miningFilterForm.getSnow().equals("min")){
 						if(reportObject.getInt("Snow")<=configuration.getSnowMinThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}
@@ -211,12 +208,12 @@ System.out.println("*************** "+reportObject.getInt("rain"));
 				else if(miningFilterForm.getTemp()!=null){
 					if(miningFilterForm.getTemp().equals("max")){
 						if(reportObject.getInt("temperature")>=configuration.getTempMaxThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}else if(miningFilterForm.getTemp().equals("min")){
 						if(reportObject.getInt("temperature")<=configuration.getTempMinThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}
@@ -224,12 +221,12 @@ System.out.println("*************** "+reportObject.getInt("rain"));
 				else if(miningFilterForm.getWindSpeed()!=null){
 					if(miningFilterForm.getWindSpeed().equals("max")){
 						if(reportObject.getInt("wspeed")>=configuration.getWindSpeedMaxThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}else if(miningFilterForm.getWindSpeed().equals("min")){
 						if(reportObject.getInt("wspeed")<=configuration.getWindSpeedMinThreshold()){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}		
 					}
@@ -237,12 +234,12 @@ System.out.println("*************** "+reportObject.getInt("rain"));
 				else if(miningFilterForm.getWindDir()!=null){
 					if(miningFilterForm.getWindDir().equals("e2w")){
 						if(reportObject.getString("wdirection").equals("EAST2WEST")){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}else if(miningFilterForm.getWindDir().equals("w2e")){
 						if(reportObject.getString("wdirection").equals("WEST2EAST")){
-							stringBuilder.append(System.lineSeparator());
+							stringBuilder.append(System.getProperty("line.separator"));
 							stringBuilder.append(reportObject.getString("xml"));
 						}
 					}
@@ -255,16 +252,21 @@ System.out.println("*************** "+reportObject.getInt("rain"));
 
 	private String getFileContent(File file) throws IOException{
 		BufferedReader reader = new BufferedReader(new FileReader(file));
-		String currentLine,completeString="";
+		String currentLine;
+		StringBuilder stringBuilder=new StringBuilder("");
 		while((currentLine = reader.readLine()) != null) {
 			String trimmedLine = currentLine.trim();
-			if(trimmedLine.indexOf("<weather>")<0 && trimmedLine.indexOf("</weather>")<0){
-				completeString=completeString+currentLine;
+			if(trimmedLine.indexOf("<weather>")>=0){
+				trimmedLine=StringUtils.remove(trimmedLine, "<weather>");
 			}
+			if(trimmedLine.indexOf("</weather>")>=0){
+				trimmedLine=StringUtils.remove(trimmedLine, "</weather>");
+			}
+			stringBuilder.append(trimmedLine);
 		}
 
 		reader.close();
-		return completeString;
+		return stringBuilder.toString();
 
 	}
 

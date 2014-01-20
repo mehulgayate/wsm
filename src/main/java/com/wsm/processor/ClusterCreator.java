@@ -73,7 +73,8 @@ public class ClusterCreator {
 				file.createNewFile();
 				FileWriter fileWritter = new FileWriter(file,true);
 				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-				bufferWritter.append("<weather>");				
+				bufferWritter.append("<weather>");		
+				bufferWritter.append(System.getProperty("line.separator"));
 				bufferWritter.close();
 			}
 			if(!allDatafile.exists()){
@@ -81,7 +82,8 @@ public class ClusterCreator {
 				allDatafile.createNewFile();
 				FileWriter fileWritter = new FileWriter(allDatafile,true);
 				BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-				bufferWritter.append("<weather>");				
+				bufferWritter.append("<weather>");
+				bufferWritter.append(System.getProperty("line.separator"));
 				bufferWritter.close();
 			}
 			
@@ -94,7 +96,7 @@ public class ClusterCreator {
 			String currentLine;
 
 			while((currentLine = reader.readLine()) != null) {
-			    // trim newline when comparing with lineToRemove
+			    // trim append() when comparing with lineToRemove
 			    String trimmedLine = currentLine.trim();
 			    if(trimmedLine.equals(lineToRemove)) continue;
 			    writer.write(currentLine);
@@ -112,7 +114,7 @@ public class ClusterCreator {
 			lineToRemove = "</weather>";		
 
 			while((currentLine = reader.readLine()) != null) {
-			    // trim newline when comparing with lineToRemove
+			    // trim append() when comparing with lineToRemove
 			    String trimmedLine = currentLine.trim();
 			    if(trimmedLine.equals(lineToRemove)) continue;
 			    writer.write(currentLine);
@@ -125,9 +127,9 @@ public class ClusterCreator {
 			
 			FileWriter fileWritter = new FileWriter(file,true);
 			BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
-			bufferWritter.newLine();
+			bufferWritter.append(System.getProperty("line.separator"));
 			bufferWritter.append(report.getXmlString());
-			bufferWritter.newLine();
+			bufferWritter.append(System.getProperty("line.separator"));
 			bufferWritter.append("</weather>");
 			
 			bufferWritter.close();
@@ -135,9 +137,9 @@ public class ClusterCreator {
 			
 			fileWritter = new FileWriter(allDatafile,true);
 			bufferWritter = new BufferedWriter(fileWritter);
-			bufferWritter.newLine();
+			bufferWritter.append(System.getProperty("line.separator"));
 			bufferWritter.append(report.getXmlString());
-			bufferWritter.newLine();
+			bufferWritter.append(System.getProperty("line.separator"));
 			bufferWritter.append("</weather>");
 			
 			bufferWritter.close();
