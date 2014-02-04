@@ -156,91 +156,99 @@ public class MiningService {
 		endDate=dateTimeUtil.getNextDate(endDate);		
 
 		do{
-			
+
 			String reportKey=iterator.next();
 			JSONObject reportObject=reports.getJSONObject(reportKey);
 			Date reportDate=dateTimeUtil.provideDate(reportObject.getString("date"));
 			if(reportDate.after(startDate) && reportDate.before(endDate)){
-
-
 				if(miningFilterForm.getHumidity()!=null){
-					if(miningFilterForm.getHumidity().equals("max")){
-						if(reportObject.getInt("humidity")>=configuration.getHumidityMaxThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
-						}
-					}else if(miningFilterForm.getHumidity().equals("min")){
-						if(reportObject.getInt("humidity")<=configuration.getHumidityMinThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
+					if(reportObject.has("humidity")){
+						if(miningFilterForm.getHumidity().equals("max")){
+							if(reportObject.getInt("humidity")>=configuration.getHumidityMaxThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
+						}else if(miningFilterForm.getHumidity().equals("min")){
+							if(reportObject.getInt("humidity")<=configuration.getHumidityMinThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
 						}
 					}
 				}
 
 				if(miningFilterForm.getRain()!=null){
-					if(miningFilterForm.getRain().equals("max")){
-						if(reportObject.getInt("rain")>=configuration.getRainMaxThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
-						}			
-					}else if(miningFilterForm.getRain().equals("min")){
-						if(reportObject.getInt("rain")<=configuration.getRainMinThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
+					if(reportObject.has("rain")){
+						if(miningFilterForm.getRain().equals("max")){
+							if(reportObject.getInt("rain")>=configuration.getRainMaxThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}			
+						}else if(miningFilterForm.getRain().equals("min")){
+							if(reportObject.getInt("rain")<=configuration.getRainMinThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
 						}
 					}
 				}
-
-
 				else if(miningFilterForm.getSnow()!=null){
-					if(miningFilterForm.getSnow().equals("max")){
-						if(reportObject.getInt("snow")>=configuration.getSnowMaxThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
-						}
-					}else if(miningFilterForm.getSnow().equals("min")){
-						if(reportObject.getInt("Snow")<=configuration.getSnowMinThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
+					if(reportObject.has("snow")){
+						if(miningFilterForm.getSnow().equals("max")){
+							if(reportObject.getInt("snow")>=configuration.getSnowMaxThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
+						}else if(miningFilterForm.getSnow().equals("min")){
+							if(reportObject.getInt("Snow")<=configuration.getSnowMinThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
 						}
 					}
 				}
 				else if(miningFilterForm.getTemp()!=null){
-					if(miningFilterForm.getTemp().equals("max")){
-						if(reportObject.getInt("temperature")>=configuration.getTempMaxThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
-						}
-					}else if(miningFilterForm.getTemp().equals("min")){
-						if(reportObject.getInt("temperature")<=configuration.getTempMinThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
+					if(reportObject.has("temperature")){
+						if(miningFilterForm.getTemp().equals("max")){
+							if(reportObject.getInt("temperature")>=configuration.getTempMaxThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
+						}else if(miningFilterForm.getTemp().equals("min")){
+							if(reportObject.getInt("temperature")<=configuration.getTempMinThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
 						}
 					}
 				}
 				else if(miningFilterForm.getWindSpeed()!=null){
-					if(miningFilterForm.getWindSpeed().equals("max")){
-						if(reportObject.getInt("wspeed")>=configuration.getWindSpeedMaxThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
+					if(reportObject.has("wspeed")){
+						if(miningFilterForm.getWindSpeed().equals("max")){
+							if(reportObject.getInt("wspeed")>=configuration.getWindSpeedMaxThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
+						}else if(miningFilterForm.getWindSpeed().equals("min")){
+							if(reportObject.getInt("wspeed")<=configuration.getWindSpeedMinThreshold()){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}		
 						}
-					}else if(miningFilterForm.getWindSpeed().equals("min")){
-						if(reportObject.getInt("wspeed")<=configuration.getWindSpeedMinThreshold()){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
-						}		
 					}
 				}
 				else if(miningFilterForm.getWindDir()!=null){
-					if(miningFilterForm.getWindDir().equals("e2w")){
-						if(reportObject.getString("wdirection").equals("EAST2WEST")){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
-						}
-					}else if(miningFilterForm.getWindDir().equals("w2e")){
-						if(reportObject.getString("wdirection").equals("WEST2EAST")){
-							stringBuilder.append(System.getProperty("line.separator"));
-							stringBuilder.append(reportObject.getString("xml"));
+					if(reportObject.has("wdirection")){
+						if(miningFilterForm.getWindDir().equals("e2w")){
+							if(reportObject.getString("wdirection").equals("EAST2WEST")){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
+						}else if(miningFilterForm.getWindDir().equals("w2e")){
+							if(reportObject.getString("wdirection").equals("WEST2EAST")){
+								stringBuilder.append(System.getProperty("line.separator"));
+								stringBuilder.append(reportObject.getString("xml"));
+							}
 						}
 					}
 				}

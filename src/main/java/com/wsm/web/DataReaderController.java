@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.w3c.dom.Document;
 
 import com.evalua.entity.support.DataStoreManager;
+import com.wsm.entity.support.Repository;
 import com.wsm.form.FileUploadForm;
 import com.wsm.processor.ClusterCreator;
 import com.wsm.processor.PMFCalculator;
@@ -40,6 +41,9 @@ public class DataReaderController {
 	
 	@Resource
 	private ClusterCreator clusterCreator;
+	
+	@Resource
+	private Repository repository;
 
 	@RequestMapping("/readData")
 	public ModelAndView readData()throws Exception{
@@ -56,6 +60,7 @@ public class DataReaderController {
 			
 			clusterCreator.crateClusters();
 			clusterCreator.allocateCluster();
+			repository.removeAllRecords();
 			mv.addObject("json",jsonObject);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,6 +81,7 @@ public class DataReaderController {
 			pmfCalculator.JsontoReport(jsonObject);			
 			clusterCreator.crateClusters();
 			clusterCreator.allocateCluster();
+			repository.removeAllRecords();
 			mv.addObject("json",jsonObject);
 		} catch (Exception e) {
 			e.printStackTrace();

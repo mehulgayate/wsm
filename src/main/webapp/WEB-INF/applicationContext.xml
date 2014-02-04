@@ -92,22 +92,22 @@
 	        <value>${wsm.config.snowMaxThreshold}</value>
 	    </property>
 	    <property name="tempMinThreshold">
-	        <value>${wsm.config.snowMinThreshold}</value>
+	        <value>${wsm.config.tempMinThreshold}</value>
 	    </property>
 	    <property name="tempMaxThreshold">
-	        <value>${wsm.config.snowMaxThreshold}</value>
+	        <value>${wsm.config.tempMaxThreshold}</value>
 	    </property>
 	    <property name="humidityMinThreshold">
-	        <value>${wsm.config.snowMinThreshold}</value>
+	        <value>${wsm.config.humidityMinThreshold}</value>
 	    </property>
 	    <property name="humidityMaxThreshold">
-	        <value>${wsm.config.snowMaxThreshold}</value>
+	        <value>${wsm.config.humidityMaxThreshold}</value>
 	    </property>
 	    <property name="windSpeedMinThreshold">
-	        <value>${wsm.config.snowMinThreshold}</value>
+	        <value>${wsm.config.windSpeedMinThreshold}</value>
 	    </property>
 	    <property name="windSpeedMaxThreshold">
-	        <value>${wsm.config.snowMaxThreshold}</value>
+	        <value>${wsm.config.windSpeedMaxThreshold}</value>
 	    </property>
 	    
 	    

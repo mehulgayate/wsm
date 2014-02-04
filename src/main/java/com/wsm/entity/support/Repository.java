@@ -39,6 +39,11 @@ public class Repository {
 		return getSession().createQuery("FROM "+Cluster.class.getName())
 				.list();
 	}
+	
+	public void removeAllRecords(){
+		getSession().createQuery("delete FROM "+Report.class.getName())
+				.executeUpdate();
+	}
 
 	Session getSession(){
 		return sessionFactory.getCurrentSession();	
