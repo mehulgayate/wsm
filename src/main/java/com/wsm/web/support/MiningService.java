@@ -29,6 +29,9 @@ import com.wsm.util.DateTimeUtil;
 import com.wsm.util.XMLParser;
 
 public class MiningService {
+	
+	public static int recordCount=0;
+	public static int clusterCount=0;
 
 	private Repository repository;
 	private DateTimeUtil dateTimeUtil;
@@ -51,7 +54,8 @@ public class MiningService {
 	public String mineInClusteredData(MiningFilterForm miningFilterForm) throws ParseException, IOException{
 		StringBuilder stringBuilder=new StringBuilder("<weather>");
 		List<String> clustersToSearch=new ArrayList<String>();
-
+int clustercnt=0;
+		
 		if(miningFilterForm.getHumidity()!=null){
 			if(miningFilterForm.getHumidity().equals("max")){
 				clustersToSearch.add(configuration.getMaxHumidityPmfStrings());
@@ -114,6 +118,7 @@ public class MiningService {
 						System.out.println("File in clusters "+file.getAbsolutePath());
 						if(file.exists()){
 							stringBuilder.append(getFileContent(file));
+							clustercnt++;
 						}
 						startDate=dateTimeUtil.getNextMonthsDate(startDate);
 					}
@@ -123,6 +128,7 @@ public class MiningService {
 
 		}
 		stringBuilder.append("</weather>");		
+		clusterCount=clustercnt;
 		return stringBuilder.toString();
 	}
 
@@ -148,6 +154,7 @@ public class MiningService {
 		StringBuilder stringBuilder=new StringBuilder("<weather>");
 		JSONObject reports=jsonObject.getJSONObject("weather");
 		Iterator<String> iterator=reports.keys();
+		int recCount=0;
 
 		Date startDate=dateTimeUtil.provideDate(miningFilterForm.getStartDate());
 		startDate=dateTimeUtil.getMonthsFirstDate(startDate);
@@ -167,11 +174,13 @@ public class MiningService {
 							if(reportObject.getInt("humidity")>=configuration.getHumidityMaxThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}else if(miningFilterForm.getHumidity().equals("min")){
 							if(reportObject.getInt("humidity")<=configuration.getHumidityMinThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}
 					}
@@ -183,11 +192,13 @@ public class MiningService {
 							if(reportObject.getInt("rain")>=configuration.getRainMaxThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}			
 						}else if(miningFilterForm.getRain().equals("min")){
 							if(reportObject.getInt("rain")<=configuration.getRainMinThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}
 					}
@@ -198,11 +209,13 @@ public class MiningService {
 							if(reportObject.getInt("snow")>=configuration.getSnowMaxThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}else if(miningFilterForm.getSnow().equals("min")){
 							if(reportObject.getInt("Snow")<=configuration.getSnowMinThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}
 					}
@@ -213,11 +226,13 @@ public class MiningService {
 							if(reportObject.getInt("temperature")>=configuration.getTempMaxThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}else if(miningFilterForm.getTemp().equals("min")){
 							if(reportObject.getInt("temperature")<=configuration.getTempMinThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}
 					}
@@ -228,11 +243,13 @@ public class MiningService {
 							if(reportObject.getInt("wspeed")>=configuration.getWindSpeedMaxThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}else if(miningFilterForm.getWindSpeed().equals("min")){
 							if(reportObject.getInt("wspeed")<=configuration.getWindSpeedMinThreshold()){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}		
 						}
 					}
@@ -243,11 +260,13 @@ public class MiningService {
 							if(reportObject.getString("wdirection").equals("EAST2WEST")){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}else if(miningFilterForm.getWindDir().equals("w2e")){
 							if(reportObject.getString("wdirection").equals("WEST2EAST")){
 								stringBuilder.append(System.getProperty("line.separator"));
 								stringBuilder.append(reportObject.getString("xml"));
+								recCount++;
 							}
 						}
 					}
@@ -255,6 +274,7 @@ public class MiningService {
 			}
 		}while(iterator.hasNext());
 		stringBuilder.append("</weather>");
+		recordCount=recCount;
 		return stringBuilder.toString();
 	}
 

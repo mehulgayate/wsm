@@ -38,13 +38,13 @@ border-bottom: 1px solid;
 	</tr>
 	<tr>
 	<td>Time Taken</td>
-	<td>200 ms</td>
-	<td>670 ms</td>
+	<td>${clustredtakenTime} ms</td>
+	<td>${nonClustredtakenTime} ms</td>
 	</tr>
 	<tr>
 	<td>Number of records fetched</td>
-	<td>560</td>
-	<td>560</td>
+	<td>-</td>
+	<td>${recordCount}</td>
 	</tr>
 	<tr>
 	<td>Avg Record Size</td>
@@ -53,7 +53,7 @@ border-bottom: 1px solid;
 	</tr>
 	<tr>
 	<td>Clusters Accessed</td>
-	<td>4</td>
+	<td>${clusterCount}</td>
 	<td>--</td>
 	</tr>
 	

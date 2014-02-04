@@ -39,7 +39,9 @@ public class MiningController {
 		mv.addObject("clustredtakenTime",(new Date().getTime()-startBeforeClusMining.getTime()));
 		
 		
-		mv.addObject("nonClusteredData",nonClusteredData);		
+		mv.addObject("nonClusteredData",nonClusteredData);
+		mv.addObject("recordCount",miningService.recordCount);
+		mv.addObject("clusterCount",miningService.clusterCount);
 		mv.addObject("clusteredXmlResult",clusteredXmlString);
 		return mv;
 	}
