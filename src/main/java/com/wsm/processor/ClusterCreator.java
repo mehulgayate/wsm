@@ -103,9 +103,10 @@ public class ClusterCreator {
 			}
 
 			reader.close();
-			writer.close();			
-			tempFile.renameTo(file);			
-			
+			writer.close();		
+			file.delete();
+			tempFile.renameTo(file);		
+						
 			//Add data to All data File as well
 			tempFile = new File(configuration.getOriginalBaseLocation()+"/temp.xml");
 			reader = new BufferedReader(new FileReader(allDatafile));
@@ -121,7 +122,8 @@ public class ClusterCreator {
 			}
 
 			reader.close();
-			writer.close();			
+			writer.close();	
+			allDatafile.delete();
 			tempFile.renameTo(allDatafile);
 
 			
