@@ -22,6 +22,7 @@ import com.wsm.entity.support.Repository;
 import com.wsm.form.FileUploadForm;
 import com.wsm.processor.ClusterCreator;
 import com.wsm.processor.PMFCalculator;
+import com.wsm.processor.WSMConfiguration;
 import com.wsm.util.XMLParser;
 
 @Controller
@@ -44,6 +45,9 @@ public class DataReaderController {
 	
 	@Resource
 	private Repository repository;
+	
+	@Resource
+	private WSMConfiguration configuration;
 
 	@RequestMapping("/readData")
 	public ModelAndView readData()throws Exception{
@@ -70,7 +74,7 @@ public class DataReaderController {
 	
 	@RequestMapping("/upload-xml")
 	public ModelAndView uploadFile(@ModelAttribute(FileUploadForm.key) FileUploadForm fileUploadForm)throws Exception{
-		ModelAndView mv=new ModelAndView("json-string");
+		ModelAndView mv=new ModelAndView("new/upload-result");
 		try {
 			
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -83,6 +87,7 @@ public class DataReaderController {
 			clusterCreator.allocateCluster();
 			repository.removeAllRecords();
 			mv.addObject("json",jsonObject);
+			mv.addObject("cluterLocation", configuration.getClusterBaseLocation());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	

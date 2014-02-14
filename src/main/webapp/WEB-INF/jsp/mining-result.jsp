@@ -64,12 +64,13 @@ border-bottom: 1px solid;
 <div>
 <strong>Mining From Clustered data  : </strong><br>
 <strong>Time Taken : </strong>${clustredtakenTime}<br>
-<textarea style="width: 800px; min-height: 500px;">${clusteredXmlResult}</textarea></div>
+<textarea style="width: 800px; min-height: 500px;">${clusteredXmlResult}</textarea>
 
 
 <strong>Mining From Non-Clustered data  : </strong><br>
 <strong>Time Taken : </strong>${nonClustredtakenTime}<br>
-<textarea style="width: 800px; min-height: 500px;">${nonClusteredData}</textarea></div>
+<textarea style="width: 800px; min-height: 500px;">${nonClusteredData}</textarea>
+</div>
 
 </body>
 </html>

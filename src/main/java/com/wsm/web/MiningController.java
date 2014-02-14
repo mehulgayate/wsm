@@ -23,13 +23,13 @@ public class MiningController {
 	
 	@RequestMapping("/mining")
 	public ModelAndView showFilerPage(HttpServletRequest request){
-		ModelAndView mv=new ModelAndView("mining-filter");
+		ModelAndView mv=new ModelAndView("new/mining");
 		return mv;
 	}
 	
 	@RequestMapping("/mine-clusetred-data")
 	public ModelAndView mineCluesteredData(HttpServletRequest request,@ModelAttribute(MiningFilterForm.key) MiningFilterForm miningFilterForm) throws ParseException, IOException{
-		ModelAndView mv=new ModelAndView("mining-result");		
+		ModelAndView mv=new ModelAndView("new/mining-result");		
 		Date startNonClusData=new Date();
 		String nonClusteredData=miningService.mineFromNonClustredData(miningFilterForm);
 		mv.addObject("nonClustredtakenTime",(new Date().getTime()-startNonClusData.getTime()));
