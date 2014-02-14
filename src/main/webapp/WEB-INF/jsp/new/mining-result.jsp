@@ -158,7 +158,7 @@ border-bottom: 1px solid;
 </div> <!-- END of templatemo_wrapper -->
 <div id="templatemo_copyright_wrapper">
     <div id="templatemo_copyright">
-        Developed By <a href="#">Mr. Ashish Patel</a> 
+        Developed By <a href="#"></a> 
     </div>
 </div>
 </body>
