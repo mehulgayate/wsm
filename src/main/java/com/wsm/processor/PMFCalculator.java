@@ -11,8 +11,11 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.evalua.entity.support.DataStoreManager;
+import com.wsm.entity.GraphData;
+import com.wsm.entity.GraphData.GraphType;
 import com.wsm.entity.Report;
 import com.wsm.entity.Report.WindDirection;
+import com.wsm.entity.support.Repository;
 import com.wsm.util.DateTimeUtil;
 
 public class PMFCalculator {	
@@ -25,6 +28,17 @@ public class PMFCalculator {
 	@Resource
 	private DateTimeUtil dateTimeUtil;
 
+	@Resource
+	private Repository repository;
+
+	public void setRepository(Repository repository) {
+		this.repository = repository;
+	}
+
+	public static StringBuilder tropicalTemp = new StringBuilder("");
+	public static StringBuilder tropicalHumi =new StringBuilder("");
+	public static StringBuilder dryTemp= new StringBuilder("");
+	public static StringBuilder dryHumi=new StringBuilder("");
 
 
 	public void setDateTimeUtil(DateTimeUtil dateTimeUtil) {
@@ -72,6 +86,16 @@ public class PMFCalculator {
 				pmfval++;
 			}else if (report.getTemprature()<=configuration.getTempMinThreshold()) {
 				pmfval--;
+			}
+
+			int temprature=report.getTemprature();
+			if(temprature>15 && temprature<35 && report.getHumidity()!=null){
+				tropicalTemp.append(","+temprature);
+				tropicalHumi.append(","+report.getHumidity());
+			}
+			if(temprature>10 && temprature<35 && report.getHumidity()!=null && report.getRain()!=null && report.getRain()<1){
+				dryTemp.append(","+temprature);
+				dryHumi.append(","+report.getHumidity());
 			}
 		}
 		if(report.getHumidity()!=null){
@@ -262,7 +286,38 @@ public class PMFCalculator {
 
 			}while(innIterator.hasNext());
 			calculatePFM(report);
-			dataStoreManager.save(report);
+			dataStoreManager.save(report);			
+
 		}while(iterator.hasNext());
+		
+		GraphData tropical=repository.findGraphData(GraphType.TROPICAL);
+		if(tropical==null){
+			tropical=new GraphData();
+			tropical.setHumidata("");
+			tropical.setTempdata("");
+			tropical.setGraphType(GraphType.TROPICAL);
+		}
+		GraphData dry=repository.findGraphData(GraphType.DRY);
+		if(dry==null){
+			dry=new GraphData();
+			dry.setHumidata("");
+			dry.setTempdata("");
+			dry.setGraphType(GraphType.DRY);
+		}
+		
+		tropical.setTempdata(tropical.getTempdata()+","+tropicalTemp.toString());
+		tropicalTemp=new StringBuilder("");
+		
+		tropical.setHumidata(tropical.getHumidata()+","+tropicalHumi.toString());
+		tropicalHumi=new StringBuilder("");
+		
+		dry.setTempdata(dry.getTempdata()+","+dryTemp.toString());
+		dryTemp=new StringBuilder("");
+		
+		dry.setHumidata(dry.getHumidata()+","+dryHumi.toString());
+		dryHumi=new StringBuilder("");
+		
+		dataStoreManager.save(tropical);
+		dataStoreManager.save(dry);
 	}
 }

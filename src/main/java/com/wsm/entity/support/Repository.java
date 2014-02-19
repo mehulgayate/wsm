@@ -8,6 +8,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.wsm.entity.Cluster;
+import com.wsm.entity.GraphData;
+import com.wsm.entity.GraphData.GraphType;
 import com.wsm.entity.Report;
 
 @Transactional
@@ -47,5 +49,12 @@ public class Repository {
 
 	Session getSession(){
 		return sessionFactory.getCurrentSession();	
+	}
+	
+	public GraphData findGraphData(GraphType graphType){
+		
+		return (GraphData) getSession().createQuery("FROM "+GraphData.class.getName()+" where graphType=:nagraphTypeme")
+				.setParameter("graphType", graphType)
+				.uniqueResult();
 	}
 }

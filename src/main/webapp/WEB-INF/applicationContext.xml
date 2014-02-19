@@ -171,6 +171,8 @@
 		<property name="configuration" ref="wsmConfiguration" />
 		<property name="dataStoreManager" ref="dataStoreManager" />
 		<property name="dateTimeUtil" ref="dateTimeUtil" />
+		<property name="repository" ref="repository" />
+		
 	</bean>
 	<bean id="clusterCreator" class="com.wsm.processor.ClusterCreator">		
 		<property name="configuration" ref="wsmConfiguration" />
