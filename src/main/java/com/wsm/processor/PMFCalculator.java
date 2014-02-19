@@ -39,6 +39,138 @@ public class PMFCalculator {
 		this.configuration = configuration;
 	}
 
+	public void calcPfmForContinuous(Report report, int numberOfElements, int numberOfReports){
+
+		Long reportIndex=report.getId();
+
+		double bandWidth= 1.06 * (1) * (10 ^ (-1/reportIndex)) ;
+
+		double pmfval= 1 / ( 10 * (Math.sqrt( 2 * 3.13 * bandWidth ) ) ) ;
+
+		for(int i=0;i<numberOfReports;i++){
+
+			double tempVar=Math.pow(reportIndex-numberOfElements, (2   /  ( -2  * bandWidth  * bandWidth )));
+			pmfval=pmfval * Math.pow(reportIndex, tempVar);
+		}
+
+		if(report.getRain()!=null){
+			if(report.getRain()>=configuration.getRainMaxThreshold()){
+				pmfval++;
+			}else if (report.getRain()<=configuration.getRainMinThreshold()) {
+				pmfval--;
+			}		
+		}
+		if(report.getSnow()!=null){
+			if(report.getSnow()>=configuration.getSnowMaxThreshold()){
+				pmfval++;
+			}else if(report.getSnow()<=configuration.getSnowMinThreshold()){
+				pmfval--;
+			}
+		}
+		if(report.getTemprature()!=null){
+			if(report.getTemprature()>=configuration.getTempMaxThreshold()){
+				pmfval++;
+			}else if (report.getTemprature()<=configuration.getTempMinThreshold()) {
+				pmfval--;
+			}
+		}
+		if(report.getHumidity()!=null){
+			if(report.getHumidity()>=configuration.getHumidityMaxThreshold()){
+				pmfval++;
+			}else if (report.getHumidity()<=configuration.getHumidityMinThreshold()) {
+				pmfval--;
+			}
+		}
+		if(report.getWspeed()!=null){
+			if(report.getWspeed()>=configuration.getWindSpeedMaxThreshold()){
+				pmfval++;
+			}else if(report.getWspeed()<=configuration.getWindSpeedMinThreshold()){
+				pmfval--;
+			}
+		}
+		if(report.getWindDirection()!=null){
+			if(report.getWindDirection()==WindDirection.EAST2WEST){
+				pmfval++;
+			}else if (report.getWindDirection()==WindDirection.WEST2EAST) {
+				pmfval--;
+			}
+		}
+
+
+	}
+
+	public void calcPfmForDiscrete(Report report,int numberOfReports){
+
+		int propertiesCount=0;
+
+		if(report.getRain()!=null){
+			propertiesCount++;
+		}
+		if(report.getSnow()!=null){
+			propertiesCount++;
+		}
+		if(report.getTemprature()!=null){
+			propertiesCount++;
+		}
+		if(report.getHumidity()!=null){
+			propertiesCount++;
+		}
+		if(report.getWspeed()!=null){
+			propertiesCount++;
+		}
+		if(report.getWindDirection()!=null){
+			propertiesCount++;
+		}
+
+		double pmfval=propertiesCount / numberOfReports;	
+
+		if(report.getRain()!=null){
+			if(report.getRain()>=configuration.getRainMaxThreshold()){
+				pmfval++;
+			}else if (report.getRain()<=configuration.getRainMinThreshold()) {
+				pmfval--;
+			}		
+		}
+		if(report.getSnow()!=null){
+			if(report.getSnow()>=configuration.getSnowMaxThreshold()){
+				pmfval++;
+			}else if(report.getSnow()<=configuration.getSnowMinThreshold()){
+				pmfval--;
+			}
+		}
+		if(report.getTemprature()!=null){
+			if(report.getTemprature()>=configuration.getTempMaxThreshold()){
+				pmfval++;
+			}else if (report.getTemprature()<=configuration.getTempMinThreshold()) {
+				pmfval--;
+			}
+		}
+		if(report.getHumidity()!=null){
+			if(report.getHumidity()>=configuration.getHumidityMaxThreshold()){
+				pmfval++;
+			}else if (report.getHumidity()<=configuration.getHumidityMinThreshold()) {
+				pmfval--;
+			}
+		}
+		if(report.getWspeed()!=null){
+			if(report.getWspeed()>=configuration.getWindSpeedMaxThreshold()){
+				pmfval++;
+			}else if(report.getWspeed()<=configuration.getWindSpeedMinThreshold()){
+				pmfval--;
+			}
+		}
+		if(report.getWindDirection()!=null){
+			if(report.getWindDirection()==WindDirection.EAST2WEST){
+				pmfval++;
+			}else if (report.getWindDirection()==WindDirection.WEST2EAST) {
+				pmfval--;
+			}
+		}
+
+		report.setPmf(pmfval);
+
+	}
+
 	public Report calculatePFM(Report report){
 
 		String klStringValue="";
@@ -87,6 +219,12 @@ public class PMFCalculator {
 		}
 		report.setKlStringValue(klStringValue);
 		return report;
+	}
+
+	public Double calculateKL(Report report, double idealPmf){
+		double klDiv= report.getPmf() * (report.getPmf()/ idealPmf);
+		report.setKlIntValue(klDiv);
+		return klDiv;
 	}
 
 	public void JsontoReport(JSONObject jsonObject) throws ParseException{

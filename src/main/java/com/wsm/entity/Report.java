@@ -29,10 +29,21 @@ public class Report extends EntityBase{
 	private Integer wspeed;
 	private Date date;
 	private Integer reportId;
+	private Double klIntValue;
+	private Double pmf;	
 	
-	
-	
-	
+	public Double getPmf() {
+		return pmf;
+	}
+	public void setPmf(Double pmf) {
+		this.pmf = pmf;
+	}
+	public Double getKlIntValue() {
+		return klIntValue;
+	}
+	public void setKlIntValue(Double klIntValue) {
+		this.klIntValue = klIntValue;
+	}
 	public WindDirection getWindDirection() {
 		return windDirection;
 	}
