@@ -53,7 +53,7 @@ public class Repository {
 	
 	public GraphData findGraphData(GraphType graphType){
 		
-		return (GraphData) getSession().createQuery("FROM "+GraphData.class.getName()+" where graphType=:nagraphTypeme")
+		return (GraphData) getSession().createQuery("FROM "+GraphData.class.getName()+" where graphType=:graphType")
 				.setParameter("graphType", graphType)
 				.uniqueResult();
 	}

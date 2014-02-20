@@ -18,7 +18,7 @@ public class XMLGenerator {
 			BufferedWriter bufferWritter = new BufferedWriter(fileWritter);
 			bufferWritter.append("<weather>");
 			bufferWritter.newLine();
-			for(int i=33;i<1000;i++){
+			for(int i=33;i<200;i++){
 				bufferWritter.append("<report id=\"" +(i++) +"\">"+
 						"<date>2014-01-09</date>"+
 						"<temperature>30</temperature>"+

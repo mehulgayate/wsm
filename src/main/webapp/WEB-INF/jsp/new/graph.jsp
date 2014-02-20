@@ -102,6 +102,13 @@ border-bottom: 1px solid;
         	<div id="chart_div" style="width: 400px; height: 400px; display:inline-block; float:left;"></div>
         	<div id="chart_div2" style="width: 400px; height: 400px; display:inline-block; float:right;"></div>
         </div>
+        <div class="content_wrapper content_mb_30">
+        	<div id="chart_div3" style="width: 400px; height: 400px; display:inline-block; float:left;"></div>
+        	<div id="chart_div4" style="width: 400px; height: 400px; display:inline-block; float:right;"></div>
+        </div>
+        <div class="content_wrapper content_mb_30">
+        	<div id="chart_div5" style="width: 400px; height: 400px; display:inline-block; float:left;"></div>
+        </div>
     	<div class="content_wrapper">
             
         </div>
@@ -113,68 +120,235 @@ border-bottom: 1px solid;
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
       function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ['Age', 'Weight'],
-          [ 8,      12],
-          [ 4,      5.5],
-          [ 11,     14],
-          [ 4,      5],
-          [ 3,      3.5],
-          [ 6.5,    7]
-        ]);
+    	  
+    	  var dataArray=[];
+    		var headerArray=[];
+    		headerArray.push("Temperature");
+    		headerArray.push("Precipitation,");	
+    		dataArray.push(headerArray);	
 
-        var options = {
-          title: 'Age vs. Weight comparison',
-          hAxis: {title: 'Age', minValue: 0, maxValue: 15},
-          vAxis: {title: 'Weight', minValue: 0, maxValue: 15},
-          legend: 'none'
-        };
+    	  
+    	  $.ajax({		
+    			type : "GET",
+    			url : "/graph-data",			
+    			data : "type=TROPICAL",
+    			dataType:"json",
+    			success : function(data) {
+    				var i=1;
+    				var humid=data.humi;   
+				
+    				$.each(data.temp,function(key,value){
+    					var innerArray=[];    	
+    					innerArray.push(parseInt(value));    					
+    					innerArray.push(parseInt(humid[key]));
+    					dataArray.push(innerArray);
+    					i++;
+    				});
+    				
+    			//	alert(JSON.stringify(dataArray));
+    				var data = google.visualization.arrayToDataTable(dataArray);
 
-        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-        chart.draw(data, options);
+    		        var options = {
+    		    			'width':400,'height':400,'vAxis': {'title': 'Precipitation'},hAxis: {
+    		    		        slantedText:true,
+    		    		        slantedTextAngle:90,// here you can even use 180
+    		    		        'title': 'Temperature'
+    		    		    },title: "TROPICAL"
+    		    	};
+
+    		        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+    		        chart.draw(data, options);
+    			},
+    			error : function(e) {
+    				alert('Error while Ajax');
+    			}		
+    		});	
+    	  
+    	  
+    	  
+    	  
+    	  
+    	  
+        
         drawChart2();
+        drawChart3();
+        drawChart4();
+        drawChart5();
+
+
       }
+      
       function drawChart2() {
-          var data = google.visualization.arrayToDataTable([
-            ['Age', 'Weight'],
-            [ 8,      12],
-            [ 4,      5.5],
-            [ 11,     14],
-            [ 4,      5],
-            [ 3,      3.5],
-            [ 6.5,    7]
-          ]);
+    	  var dataArray=[];
+  		var headerArray=[];
+  		headerArray.push("Temperature");
+  		headerArray.push("Precipitation,");	
+  		dataArray.push(headerArray);	
+    	  
+    	  $.ajax({		
+  			type : "GET",
+  			url : "/graph-data",			
+  			data : "type=DRY",
+  			dataType:"json",
+  			success : function(data) {
+  				var i=1;
+  				var humid=data.humi;   
+				
+  				$.each(data.temp,function(key,value){
+  					var innerArray=[];    	
+  					innerArray.push(parseInt(value));    					
+  					innerArray.push(parseInt(humid[key]));
+  					dataArray.push(innerArray);
+  					i++;
+  				});
+  				
+  			//	alert(JSON.stringify(dataArray));
+  				var data = google.visualization.arrayToDataTable(dataArray);
 
-          var options = {
-            title: 'Age vs. Weight comparison',
-            hAxis: {title: 'Age', minValue: 0, maxValue: 15},
-            vAxis: {title: 'Weight', minValue: 0, maxValue: 15},
-            legend: 'none'
-          };
+  		        var options = {
+  		    			'width':400,'height':400,'vAxis': {'title': 'Precipitation'},hAxis: {
+  		    		        slantedText:true,
+  		    		        slantedTextAngle:90,// here you can even use 180
+  		    		        'title': 'Temperature'
+  		    		    },title: "DRY"
+  		    	};
 
-          var chart = new google.visualization.ScatterChart(document.getElementById('chart_div2'));
-          chart.draw(data, options);
+  		        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div2'));
+  		        chart.draw(data, options);
+  			},
+  			error : function(e) {
+  				alert('Error while Ajax');
+  			}		
+  		});	
         }
       function drawChart3() {
-          var data = google.visualization.arrayToDataTable([
-            ['Age', 'Weight'],
-            [ 8,      12],
-            [ 4,      5.5],
-            [ 11,     14],
-            [ 4,      5],
-            [ 3,      3.5],
-            [ 6.5,    7]
-          ]);
+    	  var dataArray=[];
+  		var headerArray=[];
+  		headerArray.push("Temperature");
+  		headerArray.push("Precipitation,");	
+  		dataArray.push(headerArray);	
+    	  $.ajax({		
+  			type : "GET",
+  			url : "/graph-data",			
+  			data : "type=TEMPERATE",
+  			dataType:"json",
+  			success : function(data) {
+  				var i=1;
+  				var humid=data.humi;   
+				
+  				$.each(data.temp,function(key,value){
+  					var innerArray=[];    	
+  					innerArray.push(parseInt(value));    					
+  					innerArray.push(parseInt(humid[key]));
+  					dataArray.push(innerArray);
+  					i++;
+  				});
+  				
+  		//		alert(JSON.stringify(dataArray));
+  				var data = google.visualization.arrayToDataTable(dataArray);
 
-          var options = {
-            title: 'Age vs. Weight comparison',
-            hAxis: {title: 'Age', minValue: 0, maxValue: 15},
-            vAxis: {title: 'Weight', minValue: 0, maxValue: 15},
-            legend: 'none'
-          };
+  		        var options = {
+  		    			'width':400,'height':400,'vAxis': {'title': 'Precipitation'},hAxis: {
+  		    		        slantedText:true,
+  		    		        slantedTextAngle:90,// here you can even use 180
+  		    		        'title': 'Temperature'
+  		    		    },title: "TEMPERATE"
+  		    	};
 
-          var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
-          chart.draw(data, options);
+  		        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div3'));
+  		        chart.draw(data, options);
+  			},
+  			error : function(e) {
+  				alert('Error while Ajax');
+  			}		
+  		});	
+        }
+      
+      function drawChart4() {
+    	  
+    	  var dataArray=[];
+  		var headerArray=[];
+  		headerArray.push("Temperature");
+  		headerArray.push("Precipitation,");	
+  		dataArray.push(headerArray);	
+    	  $.ajax({		
+  			type : "GET",
+  			url : "/graph-data",			
+  			data : "type=CONTINENTAL",
+  			dataType:"json",
+  			success : function(data) {
+  				var i=0;
+  				var humid=data.humi;   
+  				$.each(data.temp,function(key,value){
+  					var innerArray=[];    	
+  					innerArray.push(parseInt(value));    					
+  					innerArray.push(parseInt(humid[key]));
+  					dataArray.push(innerArray);
+  					i++;
+  				});
+  				
+  		//		alert(JSON.stringify(dataArray));
+  				var data = google.visualization.arrayToDataTable(dataArray);
+
+  		        var options = {
+  		    			'width':400,'height':400,'vAxis': {'title': 'Precipitation'},hAxis: {
+  		    		        slantedText:true,
+  		    		        slantedTextAngle:90,// here you can even use 180
+  		    		        'title': 'Temperature'
+  		    		    },title: "CONTINENTAL"
+  		    	};
+
+  		        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div4'));
+  		        chart.draw(data, options);
+  			},
+  			error : function(e) {
+  				alert('Error while Ajax');
+  			}		
+  		});	
+        }
+      
+      
+      function drawChart5() {
+    	  var dataArray=[];
+  		var headerArray=[];
+  		headerArray.push("Temperature");
+  		headerArray.push("Precipitation,");	
+  		dataArray.push(headerArray);	
+    	  $.ajax({		
+  			type : "GET",
+  			url : "/graph-data",			
+  			data : "type=POLAR",
+  			dataType:"json",
+  			success : function(data) {
+  				var i=1;
+  				var humid=data.humi;   
+				
+  				$.each(data.temp,function(key,value){
+  					var innerArray=[];    	
+  					innerArray.push(parseInt(value));    					
+  					innerArray.push(parseInt(humid[key]));
+  					dataArray.push(innerArray);
+  					i++;
+  				});
+  				
+  		//		alert(JSON.stringify(dataArray));
+  				var data = google.visualization.arrayToDataTable(dataArray);
+
+  		        var options = {
+  		    			'width':400,'height':400,'vAxis': {'title': 'Precipitation'},hAxis: {
+  		    		        slantedText:true,
+  		    		        slantedTextAngle:90,// here you can even use 180
+  		    		        'title': 'Temperature'
+  		    		    },title: "POLAR"
+  		    	};
+
+  		        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div5'));
+  		        chart.draw(data, options);
+  			},
+  			error : function(e) {
+  				alert('Error while Ajax');
+  			}		
+  		});	
         }
       
     </script>
