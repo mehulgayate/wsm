@@ -21,12 +21,12 @@ public class Report extends EntityBase{
 	private Long id;
 	private String xmlString;
 	private String klStringValue;
-	private Integer rain;	
-	private Integer snow;
-	private Integer temprature;
-	private Integer humidity;
+	private Double rain;	
+	private Double snow;
+	private Double temprature;
+	private Double humidity;
 	private WindDirection windDirection;
-	private Integer wspeed;
+	private Double wspeed;
 	private Date date;
 	private Integer reportId;
 	private Double klIntValue;
@@ -50,34 +50,34 @@ public class Report extends EntityBase{
 	public void setWindDirection(WindDirection windDirection) {
 		this.windDirection = windDirection;
 	}
-	public Integer getRain() {
+	public Double getRain() {
 		return rain;
 	}
-	public void setRain(Integer rain) {
+	public void setRain(Double rain) {
 		this.rain = rain;
 	}
-	public Integer getSnow() {
+	public Double getSnow() {
 		return snow;
 	}
-	public void setSnow(Integer snow) {
+	public void setSnow(Double snow) {
 		this.snow = snow;
 	}
-	public Integer getTemprature() {
+	public Double getTemprature() {
 		return temprature;
 	}
-	public void setTemprature(Integer temprature) {
+	public void setTemprature(Double temprature) {
 		this.temprature = temprature;
 	}
-	public Integer getHumidity() {
+	public Double getHumidity() {
 		return humidity;
 	}
-	public void setHumidity(Integer humidity) {
+	public void setHumidity(Double humidity) {
 		this.humidity = humidity;
 	}	
-	public Integer getWspeed() {
+	public Double getWspeed() {
 		return wspeed;
 	}
-	public void setWspeed(Integer wspeed) {
+	public void setWspeed(Double wspeed) {
 		this.wspeed = wspeed;
 	}
 	public Date getDate() {

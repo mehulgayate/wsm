@@ -215,30 +215,48 @@ public class PMFCalculator {
 			}else if (report.getTemprature()<=configuration.getTempMinThreshold()) {
 				klStringValue=klStringValue+configuration.getMinTempPmfStrings();
 			}
-			int temprature=report.getTemprature();
+			Double temprature=report.getTemprature();
 			if(temprature>15 && temprature<35 && report.getHumidity()!=null){
-				tropicalTemp.append(","+temprature);
-				tropicalHumi.append(","+report.getHumidity());
+				GraphData graphData=new GraphData();
+				graphData.setTemperature(temprature);
+				graphData.setHumidity(report.getHumidity());
+				graphData.setDate(report.getDate());
+				graphData.setGraphType(GraphType.TROPICAL);
+				dataStoreManager.save(graphData);
 			}
-			if(temprature>10 && temprature<35 && report.getHumidity()!=null && report.getRain()!=null && report.getRain()<1){
-				dryTemp.append(","+temprature);
-				dryHumi.append(","+report.getHumidity());
+			//if(temprature>10 && temprature<35 && report.getHumidity()!=null && report.getRain()!=null && report.getRain()<1){
+			if(temprature>10 && temprature<35 && report.getHumidity()!=null){
+				GraphData graphData=new GraphData();
+				graphData.setTemperature(temprature);
+				graphData.setHumidity(report.getHumidity());
+				graphData.setDate(report.getDate());
+				graphData.setGraphType(GraphType.DRY);
+				dataStoreManager.save(graphData);
+
 			}
 			if(temprature>-5 && temprature<15 && report.getHumidity()!=null){
-				TEMPERATE_TEMP.append(","+temprature);
-				TEMPERATE_HUMI.append(","+report.getHumidity());
+				GraphData graphData=new GraphData();
+				graphData.setTemperature(temprature);
+				graphData.setHumidity(report.getHumidity());
+				graphData.setDate(report.getDate());
+				graphData.setGraphType(GraphType.TEMPERATE);
+				dataStoreManager.save(graphData);
 			}
 			if(temprature>-10 && temprature<15 && report.getHumidity()!=null){
-				CONTINENTAL_TEMP.append(","+temprature);
-				CONTINENTAL_HUMI.append(","+report.getHumidity());
-			}
-			if(temprature>-10 && temprature<15 && report.getHumidity()!=null){
-				CONTINENTAL_TEMP.append(","+temprature);
-				CONTINENTAL_HUMI.append(","+report.getHumidity());
-			}
+				GraphData graphData=new GraphData();
+				graphData.setTemperature(temprature);
+				graphData.setHumidity(report.getHumidity());
+				graphData.setDate(report.getDate());
+				graphData.setGraphType(GraphType.CONTINENTAL);
+				dataStoreManager.save(graphData);
+			}			
 			if(temprature>-25 && temprature<5 && report.getHumidity()!=null){
-				POLAR_TEMP.append(","+temprature);
-				POLAR_HUMI.append(","+report.getHumidity());
+				GraphData graphData=new GraphData();
+				graphData.setTemperature(temprature);
+				graphData.setHumidity(report.getHumidity());
+				graphData.setDate(report.getDate());
+				graphData.setGraphType(GraphType.POLAR);
+				dataStoreManager.save(graphData);
 			}
 		}
 		if(report.getHumidity()!=null){
@@ -287,17 +305,17 @@ public class PMFCalculator {
 			do{
 				String key=innIterator.next();				
 				if(key.equals("rain")){					
-					report.setRain(reportObject.getInt(key));
+					report.setRain(reportObject.getDouble(key));
 				}else if(key.equals("snow")){
-					report.setSnow(reportObject.getInt(key));
+					report.setSnow(reportObject.getDouble(key));
 				}else if(key.equals("temperature")){
-					report.setTemprature(reportObject.getInt(key));
+					report.setTemprature(reportObject.getDouble(key));
 				}else if(key.equals("humidity")){
-					report.setHumidity(reportObject.getInt(key));
+					report.setHumidity(reportObject.getDouble(key));
 				}else if(key.equals("wdirection")){
 					report.setWindDirection(WindDirection.valueOf(reportObject.getString(key)));
 				}else if (key.equals("wspeed")) {
-					report.setWspeed(reportObject.getInt(key));
+					report.setWspeed(reportObject.getDouble(key));
 				}else if(key.equals("date")){
 					report.setDate(dateTimeUtil.provideDate(reportObject.getString(key)));
 				}
@@ -310,80 +328,5 @@ public class PMFCalculator {
 			dataStoreManager.save(report);			
 
 		}while(iterator.hasNext());
-		
-		GraphData tropical=repository.findGraphData(GraphType.TROPICAL);
-		if(tropical==null){
-			tropical=new GraphData();
-			tropical.setHumidata("");
-			tropical.setTempdata("");
-			tropical.setGraphType(GraphType.TROPICAL);
-		}
-		GraphData dry=repository.findGraphData(GraphType.DRY);
-		if(dry==null){
-			dry=new GraphData();
-			dry.setHumidata("");
-			dry.setTempdata("");
-			dry.setGraphType(GraphType.DRY);
-		}
-		
-		GraphData temperate=repository.findGraphData(GraphType.TEMPERATE);
-		if(temperate==null){
-			temperate=new GraphData();
-			temperate.setHumidata("");
-			temperate.setTempdata("");
-			temperate.setGraphType(GraphType.TEMPERATE);
-		}
-		GraphData continetal=repository.findGraphData(GraphType.CONTINENTAL);
-		if(continetal==null){
-			continetal=new GraphData();
-			continetal.setHumidata("");
-			continetal.setTempdata("");
-			continetal.setGraphType(GraphType.CONTINENTAL);
-		}
-		GraphData polar=repository.findGraphData(GraphType.POLAR);
-		if(polar==null){
-			polar=new GraphData();
-			polar.setHumidata("");
-			polar.setTempdata("");
-			polar.setGraphType(GraphType.POLAR);
-		}
-		
-		
-		tropical.setTempdata(tropical.getTempdata()+","+tropicalTemp.toString());
-		tropicalTemp=new StringBuilder("");
-		
-		tropical.setHumidata(tropical.getHumidata()+","+tropicalHumi.toString());
-		tropicalHumi=new StringBuilder("");
-		
-		dry.setTempdata(dry.getTempdata()+","+dryTemp.toString());
-		dryTemp=new StringBuilder("");
-		
-		dry.setHumidata(dry.getHumidata()+","+dryHumi.toString());
-		dryHumi=new StringBuilder("");
-		
-		temperate.setTempdata(temperate.getTempdata()+","+TEMPERATE_TEMP.toString());
-		TEMPERATE_TEMP=new StringBuilder("");
-		
-		temperate.setHumidata(temperate.getHumidata()+","+TEMPERATE_HUMI.toString());
-		TEMPERATE_HUMI=new StringBuilder("");
-		
-		continetal.setTempdata(continetal.getTempdata()+","+CONTINENTAL_TEMP.toString());
-		CONTINENTAL_TEMP=new StringBuilder("");
-		
-		continetal.setHumidata(continetal.getHumidata()+","+CONTINENTAL_HUMI.toString());
-		CONTINENTAL_HUMI=new StringBuilder("");
-		
-		polar.setTempdata(polar.getTempdata()+","+POLAR_TEMP.toString());
-		POLAR_TEMP=new StringBuilder("");
-		
-		polar.setHumidata(polar.getHumidata()+","+POLAR_HUMI.toString());
-		POLAR_HUMI=new StringBuilder("");
-		
-		dataStoreManager.save(tropical);
-		dataStoreManager.save(dry);
-		dataStoreManager.save(continetal);
-		dataStoreManager.save(temperate);
-		dataStoreManager.save(polar);
-
 	}
 }

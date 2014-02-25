@@ -115,7 +115,6 @@ border-bottom: 1px solid;
         <div class="clear"></div>
     </div>
 </body>
-<script type='text/javascript' src='js/logging.js'></script>
    <script type="text/javascript">
       google.load("visualization", "1", {packages:["corechart"]});
       google.setOnLoadCallback(drawChart);
@@ -133,16 +132,13 @@ border-bottom: 1px solid;
     			url : "/graph-data",			
     			data : "type=TROPICAL",
     			dataType:"json",
-    			success : function(data) {
-    				var i=1;
-    				var humid=data.humi;   
+    			success : function(data) {    				 
 				
-    				$.each(data.temp,function(key,value){
+    				$.each(data,function(key,value){
     					var innerArray=[];    	
-    					innerArray.push(parseInt(value));    					
-    					innerArray.push(parseInt(humid[key]));
+    					innerArray.push(parseInt(value.temperature));    					
+    					innerArray.push(parseInt(value.himidity));
     					dataArray.push(innerArray);
-    					i++;
     				});
     				
     			//	alert(JSON.stringify(dataArray));
@@ -191,16 +187,12 @@ border-bottom: 1px solid;
   			data : "type=DRY",
   			dataType:"json",
   			success : function(data) {
-  				var i=1;
-  				var humid=data.humi;   
-				
-  				$.each(data.temp,function(key,value){
-  					var innerArray=[];    	
-  					innerArray.push(parseInt(value));    					
-  					innerArray.push(parseInt(humid[key]));
-  					dataArray.push(innerArray);
-  					i++;
-  				});
+  				$.each(data,function(key,value){
+					var innerArray=[];    	
+					innerArray.push(parseInt(value.temperature));    					
+					innerArray.push(parseInt(value.himidity));
+					dataArray.push(innerArray);
+				});
   				
   			//	alert(JSON.stringify(dataArray));
   				var data = google.visualization.arrayToDataTable(dataArray);
@@ -233,16 +225,12 @@ border-bottom: 1px solid;
   			data : "type=TEMPERATE",
   			dataType:"json",
   			success : function(data) {
-  				var i=1;
-  				var humid=data.humi;   
-				
-  				$.each(data.temp,function(key,value){
-  					var innerArray=[];    	
-  					innerArray.push(parseInt(value));    					
-  					innerArray.push(parseInt(humid[key]));
-  					dataArray.push(innerArray);
-  					i++;
-  				});
+  				$.each(data,function(key,value){
+					var innerArray=[];    	
+					innerArray.push(parseInt(value.temperature));    					
+					innerArray.push(parseInt(value.himidity));
+					dataArray.push(innerArray);
+				});
   				
   		//		alert(JSON.stringify(dataArray));
   				var data = google.visualization.arrayToDataTable(dataArray);
@@ -277,15 +265,12 @@ border-bottom: 1px solid;
   			data : "type=CONTINENTAL",
   			dataType:"json",
   			success : function(data) {
-  				var i=0;
-  				var humid=data.humi;   
-  				$.each(data.temp,function(key,value){
-  					var innerArray=[];    	
-  					innerArray.push(parseInt(value));    					
-  					innerArray.push(parseInt(humid[key]));
-  					dataArray.push(innerArray);
-  					i++;
-  				});
+  				$.each(data,function(key,value){
+					var innerArray=[];    	
+					innerArray.push(parseInt(value.temperature));    					
+					innerArray.push(parseInt(value.himidity));
+					dataArray.push(innerArray);
+				});
   				
   		//		alert(JSON.stringify(dataArray));
   				var data = google.visualization.arrayToDataTable(dataArray);
@@ -320,16 +305,12 @@ border-bottom: 1px solid;
   			data : "type=POLAR",
   			dataType:"json",
   			success : function(data) {
-  				var i=1;
-  				var humid=data.humi;   
-				
-  				$.each(data.temp,function(key,value){
-  					var innerArray=[];    	
-  					innerArray.push(parseInt(value));    					
-  					innerArray.push(parseInt(humid[key]));
-  					dataArray.push(innerArray);
-  					i++;
-  				});
+  				$.each(data,function(key,value){
+					var innerArray=[];    	
+					innerArray.push(parseInt(value.temperature));    					
+					innerArray.push(parseInt(value.himidity));
+					dataArray.push(innerArray);
+				});
   				
   		//		alert(JSON.stringify(dataArray));
   				var data = google.visualization.arrayToDataTable(dataArray);

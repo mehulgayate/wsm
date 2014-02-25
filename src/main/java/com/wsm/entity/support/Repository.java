@@ -25,35 +25,48 @@ public class Repository {
 		return getSession().createQuery("select distinct klStringValue from "+Report.class.getName())
 				.list();
 	}
-	
+
 	public List<Report> listAllReports(){
 		return getSession().createQuery("from "+Report.class.getName())
 				.list();
 	}
-	
+
 	public Cluster findClusterByName(String name){
 		return (Cluster) getSession().createQuery("FROM "+Cluster.class.getName()+" where name=:name")
 				.setParameter("name", name)
 				.uniqueResult();
 	}
-	
+
 	public List<Cluster> listAllClusters(){
 		return getSession().createQuery("FROM "+Cluster.class.getName())
 				.list();
 	}
-	
+
 	public void removeAllRecords(){
 		getSession().createQuery("delete FROM "+Report.class.getName())
-				.executeUpdate();
+		.executeUpdate();
 	}
 
 	Session getSession(){
 		return sessionFactory.getCurrentSession();	
 	}
-	
+
 	public GraphData findGraphData(GraphType graphType){
-		
+
 		return (GraphData) getSession().createQuery("FROM "+GraphData.class.getName()+" where graphType=:graphType")
+				.setParameter("graphType", graphType)
+				.uniqueResult();
+	}
+	public List<GraphData> listGraphData(GraphType graphType){
+
+		return  getSession().createQuery("FROM "+GraphData.class.getName()+" where graphType=:graphType")
+				.setParameter("graphType", graphType)
+				.list();
+	}
+	
+	public Long findCountGraphData(GraphType graphType){
+
+		return (Long) getSession().createQuery("select count(*) FROM "+GraphData.class.getName()+" where graphType=:graphType")
 				.setParameter("graphType", graphType)
 				.uniqueResult();
 	}

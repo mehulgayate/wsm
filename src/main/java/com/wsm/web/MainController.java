@@ -1,5 +1,7 @@
 package com.wsm.web;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import net.sf.json.JSONObject;
@@ -42,56 +44,30 @@ public class MainController {
 	@RequestMapping("/tables")
 	public ModelAndView showtables(){
 		ModelAndView mv=new ModelAndView("new/table");
+		
+		mv.addObject("TROPICAL", repository.findCountGraphData(GraphType.TROPICAL));
+		mv.addObject("TEMPERATE", repository.findCountGraphData(GraphType.TEMPERATE));
+		mv.addObject("POLAR", repository.findCountGraphData(GraphType.POLAR));
+		mv.addObject("DRY", repository.findCountGraphData(GraphType.DRY));
+		mv.addObject("CONTINENTAL", repository.findCountGraphData(GraphType.CONTINENTAL));
 		return mv;
 	}
 
 	@RequestMapping("/graph-data")
 	public ModelAndView getGrapgData(@RequestParam String type){
 		ModelAndView mv=new ModelAndView("json-string");
-
-		GraphData graphData=repository.findGraphData(GraphType.valueOf(type));
-		if(graphData==null || graphData.getHumidata().trim().matches("\\,*") || graphData.getTempdata().trim().matches("\\,*")){
-			JSONObject jsonObjectOuter=new JSONObject();
-			JSONObject jsonObject1=new JSONObject();
-			JSONObject jsonObject2=new JSONObject();
-
-			jsonObject1.put(0,0);
-			jsonObject2.put(0,0);
-			
-			jsonObjectOuter.put("temp", jsonObject1);
-			jsonObjectOuter.put("humi", jsonObject2);
-			mv.addObject("data", jsonObjectOuter);
-			return mv;
-		}
-		String humi=graphData.getHumidata();
-		if(humi.length()>331){
-			humi=StringUtils.mid(humi, humi.length()-310, humi.length());
-		}
-		String[] spiltedHumi=humi.split(",");
-		graphData.setHumidata(humi);
-
-		String temp=graphData.getTempdata();
-		if(StringUtils.countMatches(temp, ",")>110){
-			temp=StringUtils.mid(temp, temp.length()-330, temp.length());
-		}
-		String[] spiltedTemp=temp.split(",");
-		graphData.setTempdata(temp);
 		
-		dataStoreManager.save(graphData);
-
+		List<GraphData> graphDatas=repository.listGraphData(GraphType.valueOf(type));
+		int i=0;
 		JSONObject jsonObjectOuter=new JSONObject();
-		JSONObject jsonObject1=new JSONObject();
-		JSONObject jsonObject2=new JSONObject();
-
-		for(int i=0;i<spiltedHumi.length;i++){
-			if(StringUtils.isNotBlank(spiltedHumi[i]) && StringUtils.isNotBlank(spiltedTemp[i])){
-				jsonObject1.put(i, spiltedTemp[i]);
-				jsonObject2.put(i, spiltedHumi[i]);
-			}
+		for (GraphData graphData : graphDatas) {
+			JSONObject jsonObject=new JSONObject();
+			jsonObject.put("temperature", graphData.getTemperature());
+			jsonObject.put("himidity", graphData.getHumidity());
+			jsonObjectOuter.put(i, jsonObject);
+			i++;
 		}
-		jsonObjectOuter.put("temp", jsonObject1);
-		jsonObjectOuter.put("humi", jsonObject2);
-		mv.addObject("data", jsonObjectOuter);
+		mv.addObject(jsonObjectOuter);
 		return mv;
-	}
+	}	
 }
