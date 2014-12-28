@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 import net.sf.json.JSONObject;
 
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.evalua.entity.support.DataStoreManager;
@@ -35,6 +37,8 @@ public class PMFCalculator {
 		this.repository = repository;
 	}
 
+	private static Logger logger=LoggerFactory.getLogger(PMFCalculator.class);
+
 	public static StringBuilder tropicalTemp = new StringBuilder("");
 	public static StringBuilder tropicalHumi =new StringBuilder("");
 	public static StringBuilder dryTemp= new StringBuilder("");
@@ -61,17 +65,29 @@ public class PMFCalculator {
 
 	public void calcPfmForContinuous(Report report, int numberOfElements, int numberOfReports){
 
+		logger.info("**** Calculating PMF for report id : "+ report.getId() +", temperature : "+report.getTemprature()+", Humidity : "+report.getHumidity());
+
 		Long reportIndex=report.getId();
 
-		double bandWidth= 1.06 * (1) * (10 ^ (-1/reportIndex)) ;
+		double bandWidth= 1.06 * (1) * (Math.pow(10 , (-1/reportIndex))) ;
+
+		logger.info(" bandwidth for current report calculated : "+bandWidth);
+
+		logger.info("calculating basic pfm ");
 
 		double pmfval= 1 / ( 10 * (Math.sqrt( 2 * 3.13 * bandWidth ) ) ) ;
 
-		for(int i=0;i<numberOfReports;i++){
+		logger.info("current pfm calculated  using ******1 / ( 10 * (Math.sqrt( 2 * 3.13 * bandWidth ) ) ) *******: "+pmfval);
+
+
+
+		/*	for(int i=0;i<numberOfReports;i++){
 
 			double tempVar=Math.pow(reportIndex-numberOfElements, (2   /  ( -2  * bandWidth  * bandWidth )));
 			pmfval=pmfval * Math.pow(reportIndex, tempVar);
-		}
+		}*/
+
+		logger.info("calculating pmf for every property in current report");
 
 		if(report.getRain()!=null){
 			if(report.getRain()>=configuration.getRainMaxThreshold()){
@@ -79,6 +95,7 @@ public class PMFCalculator {
 			}else if (report.getRain()<=configuration.getRainMinThreshold()) {
 				pmfval--;
 			}		
+			logger.info("current pfm calculated for ongoing report : "+pmfval);
 		}
 		if(report.getSnow()!=null){
 			if(report.getSnow()>=configuration.getSnowMaxThreshold()){
@@ -89,17 +106,19 @@ public class PMFCalculator {
 		}
 		if(report.getTemprature()!=null){
 			if(report.getTemprature()>=configuration.getTempMaxThreshold()){
-				pmfval++;
+				pmfval=pmfval+report.getTemprature();
 			}else if (report.getTemprature()<=configuration.getTempMinThreshold()) {
-				pmfval--;
-			}		
+				pmfval=pmfval-report.getTemprature();
+			}
+			logger.info("current pfm calculated for ongoing report : "+pmfval);
 		}
 		if(report.getHumidity()!=null){
 			if(report.getHumidity()>=configuration.getHumidityMaxThreshold()){
-				pmfval++;
+				pmfval=pmfval+report.getHumidity();
 			}else if (report.getHumidity()<=configuration.getHumidityMinThreshold()) {
-				pmfval--;
+				pmfval=pmfval-report.getHumidity();
 			}
+			logger.info("current pfm calculated for ongoing report : "+pmfval);
 		}
 		if(report.getWspeed()!=null){
 			if(report.getWspeed()>=configuration.getWindSpeedMaxThreshold()){
@@ -121,6 +140,9 @@ public class PMFCalculator {
 
 	public void calcPfmForDiscrete(Report report,int numberOfReports){
 
+		logger.info("**** Calculating PMF for report id : "+ report.getId() +", temperature : "+report.getTemprature()+", Humidity : "+report.getHumidity());
+
+		logger.info("****** couting properties");
 		int propertiesCount=0;
 
 		if(report.getRain()!=null){
@@ -142,7 +164,16 @@ public class PMFCalculator {
 			propertiesCount++;
 		}
 
+		logger.info("****** Properties found : "+propertiesCount);
+
+
+		logger.info("****** Calculating PMF : ");
+
+
 		double pmfval=propertiesCount / numberOfReports;	
+
+		logger.info("****** Calculating PMF current pmf: "+pmfval);
+
 
 		if(report.getRain()!=null){
 			if(report.getRain()>=configuration.getRainMaxThreshold()){
@@ -160,17 +191,19 @@ public class PMFCalculator {
 		}
 		if(report.getTemprature()!=null){
 			if(report.getTemprature()>=configuration.getTempMaxThreshold()){
-				pmfval++;
+				pmfval=pmfval+report.getTemprature();
 			}else if (report.getTemprature()<=configuration.getTempMinThreshold()) {
-				pmfval--;
+				pmfval=pmfval+report.getTemprature();
 			}
+			logger.info("****** Calculating PMF current pmf: "+pmfval);
 		}
 		if(report.getHumidity()!=null){
 			if(report.getHumidity()>=configuration.getHumidityMaxThreshold()){
-				pmfval++;
+				pmfval=pmfval+report.getHumidity();
 			}else if (report.getHumidity()<=configuration.getHumidityMinThreshold()) {
-				pmfval--;
+				pmfval=pmfval-report.getHumidity();
 			}
+			logger.info("****** Calculating PMF current pmf: "+pmfval);
 		}
 		if(report.getWspeed()!=null){
 			if(report.getWspeed()>=configuration.getWindSpeedMaxThreshold()){
@@ -295,10 +328,26 @@ public class PMFCalculator {
 		JSONObject reports=jsonObject.getJSONObject("weather");
 		Iterator<String> iterator=reports.keys();
 
+		Iterator<String> temIterator=reports.keys();
+
+		int iteratorSize=0;
+
+		do{
+			temIterator.next();
+			iteratorSize++;
+		}while(temIterator.hasNext());
+
+
+
 		do{
 			String reportKey=iterator.next();
+
+
+
 			JSONObject reportObject=reports.getJSONObject(reportKey);
 			Iterator<String> innIterator=reportObject.keys();
+
+
 			Report report=new Report();
 			report.setReportId(new Integer(reportKey));
 
@@ -327,6 +376,11 @@ public class PMFCalculator {
 			calculatePFM(report);
 			dataStoreManager.save(report);			
 
+			if(report.getHumidity()!=null && report.getTemprature()!=null){
+				calcPfmForContinuous(report, 2, iteratorSize);				
+			}else{
+				calcPfmForDiscrete(report, iteratorSize);
+			}
 		}while(iterator.hasNext());
 	}
 }
