@@ -1,0 +1,6 @@
+Values in application property will be calculated on the fly.
+Dbscan With and withoout KL Diversion comparision.
+Kmedoid comparison (Need to check is it doable or not within time)
+Precision and recall graph .
+UI show name of clusters and calculated values from application property.
+
